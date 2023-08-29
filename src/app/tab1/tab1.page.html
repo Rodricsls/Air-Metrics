@@ -6,13 +6,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <p>{{estado}}</p>
-  <ion-button id="container">{{mensajeEstado}}</ion-button>
-    <ion-alert
-      trigger="container"
-      header= {{alerta}}
-      [buttons]="alertButtons"
-      (didDismiss)="setResult()"
-  ></ion-alert>
+
+
+<ion-content>
+  <p>{{ bluetoothStatus }}</p>
 </ion-content>

@@ -1,80 +1,66 @@
-import { Component, OnInit} from '@angular/core';
-import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
-import { BluetoothLe } from '@capacitor-community/bluetooth-le';
-
+import { Component, OnInit } from '@angular/core';
+import { BleClient } from '@capacitor-community/bluetooth-le';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
-  mensajeEstado = "Encender";
-  estado: boolean = false;
-  alerta: string = "";
+export class Tab1Page implements OnInit {
+  bluetoothStatus: string="";
 
-  bleStatus: string = 'No inicializado';
-
-  constructor() {
-    this.checkBluetoothStatus();
+  constructor(private alertController: AlertController) { 
+    
   }
 
-  ngOnInit(): void {
-    this.checkBluetoothStatus();
-    //Chequear si el BT ya esta activado o no
-    if(this.estado){
-      this.mensajeEstado = "Apagar";
-      this.alerta = "¿Desea desactivar el BT?"
+  async ngOnInit() {
+    await BleClient.initialize();
+    const isEnabled = await BleClient.isEnabled();
+    this.updateBluetoothStatus();
+
+    //verificamos el estado del bluetooth
+    if (isEnabled) {
+      this.bluetoothStatus = 'Bluetooth activado';
+    } else {
+      this.bluetoothStatus = 'Bluetooth desactivado. Porfavor activar Bluetooth.';
+      //mandamos a llamar a una alerta para que se active el bluetooth desde los settings
+      const alert = await this.alertController.create({
+        header: 'Activar Bluetooth',
+        message: 'La aplicación necesita activar Bluetooth para su funcionamiento. Desea activarlo?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+          }, {
+            text: 'Sí',
+            handler: () => {
+
+              //Si el usario acepta, se redirige a los settings
+              BleClient.openBluetoothSettings();
+            }
+          }
+        ]
+      });
+      await alert.present();
     }
-    else{
-      this.mensajeEstado = "Encender";
-      this.alerta = "¿Desea activar el BT?";
-    }
+
+    BleClient.startEnabledNotifications((isEnabled) => {
+      this.updateBluetoothStatus();
+      
+    });
   }
 
-  async checkBluetoothStatus() {
-    const status = await BluetoothLe.isEnabled();
-    this.estado = status.value;
-    if(this.estado){
-      this.mensajeEstado = "Apagar";
-      this.alerta = "¿Desea desactivar el BT?"
-    }
-    else{
-      this.mensajeEstado = "Encender";
-      this.alerta = "¿Desea activar el BT?";
+
+  //observamos constantemente el estado de bluetooth para actualizarlo
+
+  async updateBluetoothStatus() {
+    const isEnabled = await BleClient.isEnabled();
+    if (isEnabled) {
+      this.bluetoothStatus = 'Bluetooth activado';
+    } else {
+      this.bluetoothStatus = 'Bluetooth desactivado. Porfavor activar Bluetooth.';
     }
   }
-
-  public alertButtons = [
-    {
-      text: 'Cancel',
-      role: 'cancel',
-      handler: () => {
-        
-      },
-    },
-    {
-      text: 'OK',
-      role: 'confirm',
-      handler: () => {
-        if(this.mensajeEstado == "Encender"){
-          this.mensajeEstado = "Apagar";
-          this.alerta = "¿Desea desactivar el BT?";
-        }
-        else{
-          this.mensajeEstado = "Encender";
-          this.alerta = "¿Desea activar el BT?"
-        }
-        NativeSettings.openAndroid({
-          option: AndroidSettings.Bluetooth
-        });
-        this.checkBluetoothStatus();
-      },
-    },
-  ];
-
-  setResult() {
-    return 0
-  }
-
 }
