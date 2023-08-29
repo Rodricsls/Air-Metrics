@@ -1,0 +1,8 @@
+{
+  "name": "AirMetrics",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "ae130927"
+}

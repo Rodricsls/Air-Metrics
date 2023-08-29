@@ -1,0 +1,18 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Bluetooth Device
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <p>{{estado}}</p>
+  <ion-button id="container">{{mensajeEstado}}</ion-button>
+    <ion-alert
+      trigger="container"
+      header= {{alerta}}
+      [buttons]="alertButtons"
+      (didDismiss)="setResult()"
+  ></ion-alert>
+</ion-content>
