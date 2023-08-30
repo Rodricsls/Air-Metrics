@@ -9,5 +9,22 @@
 
 
 <ion-content>
-  <p>{{ bluetoothStatus }}</p>
+  <!--<p>{{ bluetoothStatus }}</p>-->
+
+
+  <ion-button *ngIf="!estado" id="botones_ajustes" (click)="ajustes()" color="danger">
+    <ion-icon name="settings-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button *ngIf="estado" id="botones_ajustes" color="success">
+    <ion-icon name="power-outline"></ion-icon>
+  </ion-button>
+
+  <ion-list *ngIf="estado" id="lista">
+    <ion-item *ngFor="let item of items; let index">
+      <ion-icon name="leaf-outline"></ion-icon>
+      <ion-label> {{ item.name }} </ion-label>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

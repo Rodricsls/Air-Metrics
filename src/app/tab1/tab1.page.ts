@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { BleClient } from '@capacitor-community/bluetooth-le';
-import { AlertController } from '@ionic/angular';
+import { Component, OnInit, OnChanges } from '@angular/core';
+import { BleClient, BleDevice } from '@capacitor-community/bluetooth-le';
+
+const ESP_32 = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
 
 @Component({
   selector: 'app-tab1',
@@ -8,59 +9,56 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-  bluetoothStatus: string="";
+  estado: boolean = false;
+  items:  BleDevice[] = [];
 
-  constructor(private alertController: AlertController) { 
-    
+  constructor() { 
   }
 
   async ngOnInit() {
+
+    //Se inicializa el modulo.
     await BleClient.initialize();
-    const isEnabled = await BleClient.isEnabled();
+
+    //Se manda a actualizar el estado del BT.
     this.updateBluetoothStatus();
 
-    //verificamos el estado del bluetooth
-    if (isEnabled) {
-      this.bluetoothStatus = 'Bluetooth activado';
-    } else {
-      this.bluetoothStatus = 'Bluetooth desactivado. Porfavor activar Bluetooth.';
-      //mandamos a llamar a una alerta para que se active el bluetooth desde los settings
-      const alert = await this.alertController.create({
-        header: 'Activar Bluetooth',
-        message: 'La aplicación necesita activar Bluetooth para su funcionamiento. Desea activarlo?',
-        buttons: [
-          {
-            text: 'No',
-            role: 'cancel',
-            cssClass: 'secondary',
-          }, {
-            text: 'Sí',
-            handler: () => {
-
-              //Si el usario acepta, se redirige a los settings
-              BleClient.openBluetoothSettings();
-            }
-          }
-        ]
-      });
-      await alert.present();
-    }
-
-    BleClient.startEnabledNotifications((isEnabled) => {
-      this.updateBluetoothStatus();
-      
-    });
+    //Mandar a enlistar los dispositivos.
+    const isEnabled = await BleClient.isEnabled();
+    this.listarDispositivos(isEnabled);
   }
 
 
-  //observamos constantemente el estado de bluetooth para actualizarlo
-
+  //Actualizamos el estado del BT cada vez que haya un cambio.
   async updateBluetoothStatus() {
     const isEnabled = await BleClient.isEnabled();
     if (isEnabled) {
-      this.bluetoothStatus = 'Bluetooth activado';
+      this.estado = true;
     } else {
-      this.bluetoothStatus = 'Bluetooth desactivado. Porfavor activar Bluetooth.';
+      this.estado = false;
+    }
+    this.updateBluetoothStatus();
+  }
+
+  async ngOnChanges(){
+
+  }
+
+  async listarDispositivos(habilitada: boolean){
+    if(habilitada){
+      //Listamos dispositivos
+      const device = await BleClient.requestDevice({services: [ESP_32], allowDuplicates: true},);
+      this.items.push(device);
+    }
+    else{
+      this.ngOnInit();
     }
   }
+
+  //Abrimos los ajustes del BT para activarlo.
+  ajustes(){
+    BleClient.openBluetoothSettings();
+  }
+
+
 }
