@@ -40,8 +40,21 @@ export class Tab1Page implements OnInit {
     this.updateBluetoothStatus();
   }
 
-  async ngOnChanges(){
+  //Boton para encender BT
+  encender(){
+    BleClient.openBluetoothSettings();
+    this.refresh();
+  }
 
+  //Boton para apagar BT
+  apagar(){
+    BleClient.openBluetoothSettings();
+  }
+
+  //Boton de actualizar
+  refresh(){
+    this.listarDispositivos(true);
+    this.items.length = 0;
   }
 
   async listarDispositivos(habilitada: boolean){
@@ -54,11 +67,5 @@ export class Tab1Page implements OnInit {
       this.ngOnInit();
     }
   }
-
-  //Abrimos los ajustes del BT para activarlo.
-  ajustes(){
-    BleClient.openBluetoothSettings();
-  }
-
 
 }

@@ -11,19 +11,24 @@
 <ion-content>
   <!--<p>{{ bluetoothStatus }}</p>-->
 
+  
 
-  <ion-button *ngIf="!estado" id="botones_ajustes" (click)="ajustes()" color="danger">
+  <ion-button *ngIf="!estado" id="boton_apagado" (click)="encender()" color="danger">
     <ion-icon name="settings-outline"></ion-icon>
   </ion-button>
 
-  <ion-button *ngIf="estado" id="botones_ajustes" color="success">
+  <ion-button *ngIf="estado" color="success" id="boton_encendido" (click)="apagar()">
     <ion-icon name="power-outline"></ion-icon>
   </ion-button>
 
+  <ion-button *ngIf="estado" color="secondary" (click)="refresh()" id="boton_encendido">
+    <ion-icon name="refresh-outline"></ion-icon>
+  </ion-button>
+ 
   <ion-list *ngIf="estado" id="lista">
     <ion-item *ngFor="let item of items; let index">
       <ion-icon name="leaf-outline"></ion-icon>
-      <ion-label> {{ item.name }} </ion-label>
+      <ion-label>{{ item.name }} </ion-label>
     </ion-item>
   </ion-list>
 
