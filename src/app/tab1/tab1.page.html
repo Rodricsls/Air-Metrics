@@ -22,8 +22,13 @@
 
   <ion-list *ngIf="estado" id="lista">
     <ion-item *ngFor="let item of items; let index">
-      <ion-icon name="leaf-outline"></ion-icon>
-      <ion-label> {{ item.name }} </ion-label>
+      <div class="devices">
+        <ion-icon name="leaf-outline"></ion-icon>
+        <ion-label> {{ item.name }} </ion-label>
+        <ion-button id="boton_connect" color="success">
+          <ion-icon name="power-outline"></ion-icon>
+        </ion-button>
+      </div>
     </ion-item>
   </ion-list>
 
