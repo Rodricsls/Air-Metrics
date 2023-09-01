@@ -8,9 +8,18 @@
     transform: translateY(-50%);
   }
 
-  #botones_ajustes {
-    margin: 5%;
+  #botones {
     display: flex;
+  }
+
+  #boton_encendido {
+    margin: 5%;
+    width: 40%;
+  }
+
+  #boton_apagado {
+    margin: 5%;
+    width: 90%;
   }
 
   #lista {
