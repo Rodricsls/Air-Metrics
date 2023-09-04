@@ -11,6 +11,10 @@ const ESP_32 = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
 export class Tab1Page implements OnInit {
   estado: boolean = false;
   items:  BleDevice[] = [];
+  deviceConnected:boolean = false;
+  connected_b: string="leaf-outline";
+  color_start: string="success";
+  color_finish:string="danger";
 
   constructor() { 
   }
@@ -66,6 +70,40 @@ export class Tab1Page implements OnInit {
     else{
       this.ngOnInit();
     }
+  }
+
+
+  //conectamos dispositivos
+  async conectarDispositivo(device: BleDevice){
+    try{
+      await BleClient.connect(device.deviceId, (device) => this.onDisconnect());
+      this.deviceConnected=true;
+      this.connected_b="checkmark-circle-outline"
+
+    }catch(error){
+
+    }
+
+  }
+
+
+//desconectamos el dispositivo
+  async DesconectarDispositivo(device: BleDevice){
+    try{
+      await BleClient.disconnect(device.deviceId);
+      this.deviceConnected=true;
+      this.connected_b="leaf-outline";
+
+    }catch(error){
+
+    }
+  }
+
+
+
+  async onDisconnect(){
+    this.deviceConnected=false;
+    this.connected_b="leaf-outline";
   }
 
 }

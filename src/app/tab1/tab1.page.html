@@ -27,8 +27,20 @@
  
   <ion-list *ngIf="estado" id="lista">
     <ion-item *ngFor="let item of items; let index">
-      <ion-icon name="leaf-outline"></ion-icon>
-      <ion-label>{{ item.name }} </ion-label>
+      <div class="group">
+
+        <ion-icon [name]="connected_b"></ion-icon>
+        <ion-label class="name_device">{{ item.name }} </ion-label>
+        <ion-button [color]="color_start" (click)="conectarDispositivo(item)" [disabled]="!estado" class="b_start">
+          <ion-icon name="bicycle"></ion-icon>
+        </ion-button>
+        <ion-button [color]="color_finish" (click)="DesconectarDispositivo(item)" [disabled]="!deviceConnected" class="b_finish">
+          <ion-icon name="body"></ion-icon>
+        </ion-button>
+
+
+      </div>
+
     </ion-item>
   </ion-list>
 
