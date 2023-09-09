@@ -37,17 +37,13 @@
         <ion-button [color]="color_finish" (click)="DesconectarDispositivo(item)" [disabled]="!deviceConnected" class="b_finish">
           <ion-icon name="body"></ion-icon>
         </ion-button>
-        <ion-button color="secondary" (click)="obtenerData()" [disabled]="!deviceConnected" class="b_finish">
-          <ion-icon name="refresh-outline"></ion-icon>
-        </ion-button>
-
-        <ion-button color="secondary" (click)="obtenerData()" [disabled]="!deviceConnected" class="b_finish">
-          <ion-label>{{cont}}</ion-label>
-        </ion-button>
-
-
       </div>
 
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        {{data}}
+      </ion-label>
     </ion-item>
   </ion-list>
 

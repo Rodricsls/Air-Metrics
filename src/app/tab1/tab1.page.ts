@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { BleClient, BleDevice, numberToUUID } from '@capacitor-community/bluetooth-le';
 
 //UUID Tarjeta
-const ESP_32 = '91bad492-b950-4226-aa2b-4ede9fa42f59';
+const ESP_32 = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
 
 //UUID caracteristica
-const characteristicUUID = 'ca73b3ba-39f6-4ab3-91ae-186dc9577d99';
-const descriptorUUID = numberToUUID(0x2903);
+const characteristicUUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
 
 @Component({
   selector: 'app-tab1',
@@ -23,7 +22,8 @@ export class Tab1Page implements OnInit {
   color_finish:string="danger";
 
   data: number = 0;
-  cont: number = 0;
+
+  errorData: string = "none";
 
   constructor() { 
   }
@@ -88,7 +88,7 @@ export class Tab1Page implements OnInit {
       await BleClient.connect(device.deviceId, (device) => this.onDisconnect());
       this.deviceConnected=true;
       this.connected_b="checkmark-circle-outline"
-
+      this.obtenerData();
     }catch(error){
 
     }
@@ -108,28 +108,22 @@ export class Tab1Page implements OnInit {
     }
   }
 
-
-
   async onDisconnect(){
     this.deviceConnected=false;
     this.connected_b="leaf-outline";
   }
 
   async obtenerData(){
-    BleClient.read(
+
+    await BleClient.startNotifications(
       this.items[0].deviceId,
       ESP_32,
-      characteristicUUID
-    )
-    .then((characteristicValue) => {
-      // Handle the characteristic value
-      
-      this.data = characteristicValue.getInt16(0);
-    })
-    .catch((error) => {
-      // Handle any errors
-      this.cont = this.cont + 1;
-    });
+      characteristicUUID,
+      (value) => {
+        this.data = value.getUint8(0);
+      }
+    );
+
   }
 
 }
