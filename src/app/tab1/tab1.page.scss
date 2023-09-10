@@ -12,15 +12,59 @@
     display: flex;
   }
 
-  #boton_encendido {
-    margin: 5%;
-    width: 40%;
+  .Ble_config{
+
+    display: flex;
+    background-color:  rgb(247, 249, 250);
+    border-radius: 3px;
+    border-color: black;
+    margin: 3%;
+
+    #boton_encendido {
+      margin: 5%;
+      width: 40%;
+    }
+
+    #boton_apagado {
+      margin: 5%;
+      width: 90%;
+    }
+
+
   }
 
-  #boton_apagado {
-    margin: 5%;
-    width: 90%;
+  .Location_config{
+
+    display: flex;
+    background-color: rgb(247, 249, 250);
+    border-radius: 3px;
+    border-color: black;
+    margin: 3%;
+
+    #locate_encendido {
+      margin: 5%;
+      width: 90%;
+    }
+
+    #locate_apagado {
+      margin: 5%;
+      width: 90%;
+    }
+
+
   }
+
+  .option_label{
+
+    display: flex;
+    margin: 3%;
+    width:15%;
+
+  }
+
+  
+
+  
 
   #lista {
     margin: 5%;

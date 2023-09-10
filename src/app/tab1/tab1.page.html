@@ -10,44 +10,67 @@
 
 <ion-content>
   <!--<p>{{ bluetoothStatus }}</p>-->
+  
+  <div class="option_label">
 
+    <ion-label>BLE options:</ion-label>
+
+  </div>
+  <div class="Ble_config">
+
+    <ion-button *ngIf="!ble_estado" id="boton_apagado" (click)="BLEon()" color="danger">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button *ngIf="ble_estado" color="success" id="boton_encendido" (click)="BLEoff()">
+      <ion-icon name="power-outline"></ion-icon>
+    </ion-button>
+  
+    <ion-button *ngIf="ble_estado" color="secondary" (click)="refresh()" id="boton_encendido">
+      <ion-icon name="refresh-outline"></ion-icon>
+    </ion-button>
+
+  </div>
+
+
+  <div class="option_label">
+
+    <ion-label>GPS options:</ion-label>
+
+  </div>
+  <div class="Location_config">
+    
+
+    <ion-button *ngIf="!location_state" id="locate_apagado" (click)="LocationOn()" color="secondary">
+      <ion-icon name="navigate-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button *ngIf="location_state" color="success" id="locate_encendido" (click)="LocationOff()">
+      <ion-icon name="power-outline"></ion-icon>
+    </ion-button>
   
 
-  <ion-button *ngIf="!estado" id="boton_apagado" (click)="encender()" color="danger">
-    <ion-icon name="settings-outline"></ion-icon>
-  </ion-button>
-
-  <ion-button *ngIf="estado" color="success" id="boton_encendido" (click)="apagar()">
-    <ion-icon name="power-outline"></ion-icon>
-  </ion-button>
-
-  <ion-button *ngIf="estado" color="secondary" (click)="refresh()" id="boton_encendido">
-    <ion-icon name="refresh-outline"></ion-icon>
-  </ion-button>
+  </div>
  
-  <ion-list *ngIf="estado" id="lista">
+  <ion-list *ngIf="ble_estado" id="lista">
     <ion-item *ngFor="let item of items; let index">
       <div class="group">
 
         <ion-icon [name]="connected_b"></ion-icon>
         <ion-label class="name_device">{{ item.name }} </ion-label>
-        <ion-button [color]="color_start" (click)="conectarDispositivo(item)" [disabled]="!estado" class="b_start">
+        <ion-button [color]="color_start" (click)="conectarDispositivo(item)" [disabled]="!ble_estado" class="b_start">
           <ion-icon name="bicycle"></ion-icon>
         </ion-button>
         <ion-button [color]="color_finish" (click)="DesconectarDispositivo(item)" [disabled]="!deviceConnected" class="b_finish">
           <ion-icon name="body"></ion-icon>
         </ion-button>
-        <ion-button color="secondary" (click)="obtenerData()" [disabled]="!deviceConnected" class="b_finish">
-          <ion-icon name="refresh-outline"></ion-icon>
-        </ion-button>
-
-        <ion-button color="secondary" (click)="obtenerData()" [disabled]="!deviceConnected" class="b_finish">
-          <ion-label>{{cont}}</ion-label>
-        </ion-button>
-
-
       </div>
 
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        {{data}}
+      </ion-label>
     </ion-item>
   </ion-list>
 

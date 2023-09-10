@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { BleClient, BleDevice, numberToUUID } from '@capacitor-community/bluetooth-le';
 
 //UUID Tarjeta
-const ESP_32 = '91bad492-b950-4226-aa2b-4ede9fa42f59';
+const ESP_32 = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
 
 //UUID caracteristica
-const characteristicUUID = 'ca73b3ba-39f6-4ab3-91ae-186dc9577d99';
-const descriptorUUID = numberToUUID(0x2903);
-const READ_CHARACTERISTIC = "00001111-0000-1000-8000-00805F9B34FB";
+const characteristicUUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
 
 @Component({
   selector: 'app-tab1',
@@ -15,7 +13,8 @@ const READ_CHARACTERISTIC = "00001111-0000-1000-8000-00805F9B34FB";
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-  estado: boolean = false;
+  ble_estado: boolean = false;
+  location_state:boolean = false;
   items:  BleDevice[] = [];
 
   deviceConnected:boolean = false;
@@ -24,7 +23,8 @@ export class Tab1Page implements OnInit {
   color_finish:string="danger";
 
   data: number = 0;
-  cont: number = 0;
+
+  errorData: string = "none";
 
   constructor() { 
   }
@@ -37,9 +37,14 @@ export class Tab1Page implements OnInit {
     //Se manda a actualizar el estado del BT.
     this.updateBluetoothStatus();
 
+    //se observa el estado de la locaclización
+    this.locationVerifier();
+
     //Mandar a enlistar los dispositivos.
     const isEnabled = await BleClient.isEnabled();
     this.listarDispositivos(isEnabled);
+
+    
   }
 
 
@@ -47,21 +52,44 @@ export class Tab1Page implements OnInit {
   async updateBluetoothStatus() {
     const isEnabled = await BleClient.isEnabled();
     if (isEnabled) {
-      this.estado = true;
+      this.ble_estado = true;
     } else {
-      this.estado = false;
+      this.ble_estado = false;
     }
     this.updateBluetoothStatus();
   }
 
+
+  //observamos si la localización esta activada
+  async locationVerifier(){
+
+    const locationEnabled= await BleClient.isLocationEnabled();
+    if (locationEnabled){
+      this.location_state=true;
+    }else{
+      this.location_state=false;
+    }
+    this.locationVerifier();
+  }
+
+  LocationOn(){
+    BleClient.openLocationSettings();
+
+  }
+
+  LocationOff(){
+
+    BleClient.openLocationSettings();
+  }
+
   //Boton para encender BT
-  encender(){
+  BLEon(){
     BleClient.openBluetoothSettings();
     this.refresh();
   }
 
   //Boton para apagar BT
-  apagar(){
+  BLEoff(){
     BleClient.openBluetoothSettings();
   }
 
@@ -89,7 +117,7 @@ export class Tab1Page implements OnInit {
       await BleClient.connect(device.deviceId, (device) => this.onDisconnect());
       this.deviceConnected=true;
       this.connected_b="checkmark-circle-outline"
-
+      this.obtenerData();
     }catch(error){
 
     }
@@ -109,28 +137,24 @@ export class Tab1Page implements OnInit {
     }
   }
 
-
-
   async onDisconnect(){
     this.deviceConnected=false;
     this.connected_b="leaf-outline";
   }
 
   async obtenerData(){
-    const devices = await BleClient.getConnectedDevices([]);
-    console.log('Dispositivos conectados:', devices);
 
-    devices.forEach(async (device) => {
-      const estado = await BleClient.read(device.deviceId, ESP_32, characteristicUUID);
-      console.log('ESTADO:', estado.getUint8(0));   
-      if(estado.getUint8(0) == 0){
-        
-      }else if(estado.getUint8(0) == 1){
-        setIsChecked(true)
+    await BleClient.startNotifications(
+      this.items[0].deviceId,
+      ESP_32,
+      characteristicUUID,
+      (value) => {
+        this.data = value.getUint8(0);
       }
-    });
+    );
+
   }
      
   }
 
-}
+
