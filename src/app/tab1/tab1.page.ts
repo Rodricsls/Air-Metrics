@@ -7,6 +7,7 @@ const ESP_32 = '91bad492-b950-4226-aa2b-4ede9fa42f59';
 //UUID caracteristica
 const characteristicUUID = 'ca73b3ba-39f6-4ab3-91ae-186dc9577d99';
 const descriptorUUID = numberToUUID(0x2903);
+const READ_CHARACTERISTIC = "00001111-0000-1000-8000-00805F9B34FB";
 
 @Component({
   selector: 'app-tab1',
@@ -116,20 +117,20 @@ export class Tab1Page implements OnInit {
   }
 
   async obtenerData(){
-    BleClient.read(
-      this.items[0].deviceId,
-      ESP_32,
-      characteristicUUID
-    )
-    .then((characteristicValue) => {
-      // Handle the characteristic value
-      
-      this.data = characteristicValue.getInt16(0);
-    })
-    .catch((error) => {
-      // Handle any errors
-      this.cont = this.cont + 1;
+    const devices = await BleClient.getConnectedDevices([]);
+    console.log('Dispositivos conectados:', devices);
+
+    devices.forEach(async (device) => {
+      const estado = await BleClient.read(device.deviceId, ESP_32, characteristicUUID);
+      console.log('ESTADO:', estado.getUint8(0));   
+      if(estado.getUint8(0) == 0){
+        
+      }else if(estado.getUint8(0) == 1){
+        setIsChecked(true)
+      }
     });
+  }
+     
   }
 
 }
