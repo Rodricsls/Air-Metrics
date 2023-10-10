@@ -24,7 +24,7 @@ export class Tab1Page implements OnInit {
 
   data: number = 0;
 
-  errorData: string = "none";
+  errorData: any = "none";
 
   constructor() { 
   }
@@ -114,7 +114,8 @@ export class Tab1Page implements OnInit {
   //conectamos dispositivos
   async conectarDispositivo(device: BleDevice){
     try{
-      await BleClient.connect(device.deviceId, (device) => this.onDisconnect());
+      await BleClient.connect(device.deviceId, (device) => {this.onDisconnect() });
+      
       this.deviceConnected=true;
       this.connected_b="checkmark-circle-outline"
       this.obtenerData();
@@ -144,14 +145,21 @@ export class Tab1Page implements OnInit {
 
   async obtenerData(){
 
-    await BleClient.startNotifications(
-      this.items[0].deviceId,
-      ESP_32,
-      characteristicUUID,
-      (value) => {
-        this.data = value.getUint8(0);
-      }
-    );
+    try{
+
+      await BleClient.startNotifications(
+        this.items[0].deviceId,
+        ESP_32,
+        characteristicUUID,
+        (value) => {
+          this.data = value.getUint8(0);
+        }
+      );
+
+    }catch(error){
+      this.data=100;
+      this.errorData=error;
+    }
 
   }
      
