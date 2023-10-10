@@ -15,7 +15,6 @@
   .Ble_config{
 
     display: flex;
-    background-color:  rgb(247, 249, 250);
     border-radius: 3px;
     border-color: black;
     margin: 3%;
@@ -30,13 +29,11 @@
       width: 90%;
     }
 
-
   }
 
   .Location_config{
 
     display: flex;
-    background-color: rgb(247, 249, 250);
     border-radius: 3px;
     border-color: black;
     margin: 3%;
@@ -51,7 +48,6 @@
       width: 90%;
     }
 
-
   }
 
   .option_label{
@@ -59,12 +55,9 @@
     display: flex;
     margin: 3%;
     width:15%;
+    text-align: center;
 
   }
-
-  
-
-  
 
   #lista {
     margin: 5%;

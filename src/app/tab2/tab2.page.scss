@@ -1,0 +1,31 @@
+#contenedor{
+    width: 100%;
+    height: 100vh;
+}
+
+#data{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+}
+
+ion-list{
+    margin: 5%;
+    width: 100%;
+
+}
+
+#controls{
+    width: 100%;
+    height: 10%;
+    display: flex; 
+    justify-content: center;
+    gap: 8%;
+}
+
+.control{
+    width: 40%;
+    height: 80%;
+}
+
