@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocationService } from '../services/location.service';
+import { BleClient, BleDevice, numberToUUID } from '@capacitor-community/bluetooth-le';
 
 @Component({
   selector: 'app-tab2',
@@ -12,6 +13,8 @@ export class Tab2Page {
   latitude:number=0;
   longitude:number=0;
   intervalId:any=0;
+
+  buffer: number[] = [];
 
   constructor(private locationService: LocationService) {}
 
@@ -26,9 +29,7 @@ export class Tab2Page {
 
     }, 2000);
 
-
   }
-
 
   ngOnDestroy(){
 
@@ -36,6 +37,11 @@ export class Tab2Page {
       clearInterval(this.intervalId);
     }
 
+  }
+
+
+  start(){
+   alert("Comenzo la transmision");
   }
 
 

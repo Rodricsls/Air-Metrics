@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Bluetooth Device
+      Settings
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,11 +9,10 @@
 
 
 <ion-content>
-  <!--<p>{{ bluetoothStatus }}</p>-->
   
   <div class="option_label">
 
-    <ion-label>BLE options:</ion-label>
+    <ion-label>Bluetoth</ion-label>
 
   </div>
   <div class="Ble_config">
@@ -33,24 +32,28 @@
   </div>
 
 
+<div id="gps" *ngIf="!location_state">
   <div class="option_label">
 
-    <ion-label>GPS options:</ion-label>
+    <ion-label>GPS</ion-label>
 
   </div>
-  <div class="Location_config">
-    
 
-    <ion-button *ngIf="!location_state" id="locate_apagado" (click)="LocationOn()" color="secondary">
-      <ion-icon name="navigate-outline"></ion-icon>
+  <div class="Location_config">
+
+    <ion-button *ngIf="!location_state" id="locate_apagado" (click)="LocationOn()" color="danger">
+      <ion-icon name="settings-outline"></ion-icon>
     </ion-button>
 
     <ion-button *ngIf="location_state" color="success" id="locate_encendido" (click)="LocationOff()">
       <ion-icon name="power-outline"></ion-icon>
     </ion-button>
-  
-
   </div>
+
+  <ion-toast trigger="open-toast" message="This toast will disappear after 5 seconds"></ion-toast>
+
+
+</div>
  
   <ion-list *ngIf="ble_estado" id="lista">
     <ion-item *ngFor="let item of items; let index">
@@ -66,7 +69,7 @@
         </ion-button>
       </div>
 
-    </ion-item>
+  </ion-item>
     <ion-item>
       <ion-label>
         {{data}}

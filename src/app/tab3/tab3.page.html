@@ -1,17 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      User
+      Info
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
-</ion-content>
+<div id="contenedor">
+  <div id="logo">
+    <img src="../../assets/icon/Blanco_Logo-Galileo-sin-slogan.png" style="width: 80%;">
+  </div>
+  <div id="des">
+    <p>
+      Air Metrics es una aplicación que utiliza una tarjeta 
+      ESP32 para recopilar datos de humedad, CO2 y temperatura, 
+      los envía a un teléfono junto con la geolocalización y los 
+      almacena en una base de datos centralizada. Luego, muestra 
+      estos datos en gráficos interactivos en Grafana, brindando a 
+      los usuarios una forma efectiva de monitorear y visualizar las 
+      condiciones ambientales en su posición.
+    </p>
+  </div>
+</div>

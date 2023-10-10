@@ -1,28 +1,55 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Location
+      Console
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card color="light" class="coordenates">
-    <ion-header>
-      <ion-card-title>Coordenates</ion-card-title>
-    </ion-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item>
-          Altitude:{{altitude}}
-        </ion-item>
-        <ion-item>
-          Latitude:{{latitude}}
-        </ion-item>
-        <ion-item>
-          Longitude:{{longitude}}
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-</ion-content>
+<div id="contenedor">
+  <div id="data">
+    <ion-list>
+      <ion-item>
+        <ion-label>
+          >_ Hola
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          >_ Hola
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          >_ Hola
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          >_ Hola
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          >_ Hola
+        </ion-label>
+      </ion-item>
+      
+    </ion-list>
+  </div>
+  <div id="controls">
+
+    <ion-button class="control" color="success" (click)="start()">
+      <ion-icon name="play-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button class="control" color="danger">
+      <ion-icon name="stop-outline"></ion-icon>
+    </ion-button>
+
+  </div>
+</div>

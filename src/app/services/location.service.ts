@@ -6,6 +6,8 @@ import { Geolocation } from '@capacitor/geolocation';
 })
 export class LocationService {
 
+  public connection: boolean = false;
+
   //Servicio para obtener la posición del telefono
 
   constructor() { }

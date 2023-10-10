@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BleClient, BleDevice, numberToUUID } from '@capacitor-community/bluetooth-le';
+import { LocationService } from '../services/location.service';
 
 //UUID Tarjeta
 const ESP_32 = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
@@ -26,7 +27,17 @@ export class Tab1Page implements OnInit {
 
   errorData: any = "none";
 
-  constructor() { 
+  public toastButtons = [
+    {
+      text: 'Activar',
+      role: 'act',
+      handler: () => {
+        this.LocationOn();
+      },
+    },
+  ];
+
+  constructor(private locationService: LocationService) { 
   }
 
   async ngOnInit() {
@@ -43,7 +54,6 @@ export class Tab1Page implements OnInit {
     //Mandar a enlistar los dispositivos.
     const isEnabled = await BleClient.isEnabled();
     this.listarDispositivos(isEnabled);
-
     
   }
 
@@ -118,6 +128,7 @@ export class Tab1Page implements OnInit {
       
       this.deviceConnected=true;
       this.connected_b="checkmark-circle-outline"
+      this.locationService.connection = true;
       this.obtenerData();
     }catch(error){
 
@@ -132,7 +143,7 @@ export class Tab1Page implements OnInit {
       await BleClient.disconnect(device.deviceId);
       this.deviceConnected=true;
       this.connected_b="leaf-outline";
-
+      this.locationService.connection = false;
     }catch(error){
 
     }
@@ -144,23 +155,14 @@ export class Tab1Page implements OnInit {
   }
 
   async obtenerData(){
-
-    try{
-
-      await BleClient.startNotifications(
-        this.items[0].deviceId,
-        ESP_32,
-        characteristicUUID,
-        (value) => {
-          this.data = value.getUint8(0);
-        }
-      );
-
-    }catch(error){
-      this.data=100;
-      this.errorData=error;
-    }
-
+    await BleClient.startNotifications(
+      this.items[0].deviceId,
+      ESP_32,
+      characteristicUUID,
+      (value) => {
+        this.data = value.getUint8(0);
+      }
+    );
   }
      
   }
