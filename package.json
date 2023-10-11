@@ -30,6 +30,7 @@
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "^7.0.0",
+    "@types/ws": "^8.5.4",
     "capacitor-bluetooth-serial": "^0.0.4",
     "capacitor-native-settings": "^5.0.0",
     "ionicons": "^7.0.0",

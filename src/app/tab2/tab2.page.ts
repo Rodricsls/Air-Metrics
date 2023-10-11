@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LocationService } from '../services/location.service';
 import { BleClient, BleDevice, numberToUUID } from '@capacitor-community/bluetooth-le';
+import { MymqttService } from '../services/mymqtt.service';
 
 @Component({
   selector: 'app-tab2',
@@ -13,10 +14,11 @@ export class Tab2Page {
   latitude:number=0;
   longitude:number=0;
   intervalId:any=0;
+  state:any=0;
 
   buffer: number[] = [];
 
-  constructor(private locationService: LocationService) {}
+  constructor(private locationService: LocationService, private mymqttService: MymqttService) {}
 
   ngOnInit(){
     //se obtiene la posición del servicio cada 2 segundos y se asignan las coordenadas
@@ -28,7 +30,8 @@ export class Tab2Page {
       this.longitude=position.coords.longitude;
 
     }, 2000);
-
+    this.mymqttService.connect();
+    this.state=this.mymqttService.state;
   }
 
   ngOnDestroy(){
